@@ -1,12 +1,11 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-
-    <!-- Shizuku -->
     <uses-permission android:name="moe.shizuku.manager.permission.API_V23"/>
 
     <application
@@ -14,7 +13,6 @@
         android:theme="@style/Theme.ControlCenter"
         android:supportsRtl="true">
 
-        <!-- Shizuku provider — required for Shizuku API -->
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
             android:authorities="${applicationId}.shizuku"
