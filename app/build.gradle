@@ -23,7 +23,6 @@ android {
         debug {
             debuggable true
         }
-
         release {
             minifyEnabled false
             shrinkResources false
@@ -61,26 +60,21 @@ android {
 }
 
 dependencies {
-
-    // 🔑 FORCE SINGLE KOTLIN VERSION (CRITICAL FIX)
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
 
-    // Core Android
+    // Core
     implementation "androidx.core:core-ktx:1.12.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
-
-    // UI
     implementation "com.google.android.material:material:1.11.0"
 
-    // 🔧 Shizuku (safe + real)
+    // Shizuku — api + provider both required
     implementation "dev.rikka.shizuku:api:13.1.5"
+    implementation "dev.rikka.shizuku:provider:13.1.5"
 }
 
-// 🚫 GLOBAL KOTLIN CONFLICT FIX
 configurations.all {
     resolutionStrategy {
         force "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
-
         exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
         exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
     }
