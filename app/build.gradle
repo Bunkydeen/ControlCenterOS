@@ -4,21 +4,19 @@ plugins {
 }
 
 android {
-    namespace "com.controlcenter.app"
+    namespace "com.controlcenter.os"
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.controlcenter.app"
-        minSdk 24
+        applicationId "com.controlcenter.os"
+        minSdk 26
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 10
+        versionName "10.0"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
+    buildFeatures {
+        viewBinding true
     }
 
     compileOptions {
@@ -34,7 +32,12 @@ android {
 dependencies {
     implementation "androidx.core:core-ktx:1.12.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "com.google.android.material:material:1.11.0"
 
-    // ✅ Shizuku support (REAL WORKING DEPENDENCY)
+    // ✅ Shizuku (REAL WORKING DEPENDENCY)
     implementation "dev.rikka.shizuku:api:13.1.5"
 }
+E
+cat > settings.gradle << 'EOF'
+rootProject.name = "ControlCenterOS"
+include ':app'
