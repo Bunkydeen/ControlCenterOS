@@ -14,7 +14,16 @@ android {
         versionCode 1
         versionName "1.0"
     }
+configurations.all {
+    resolutionStrategy {
+        // FORCE single Kotlin version
+        force "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
 
+        // REMOVE conflicting artifacts completely
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
+    }
+}
     buildTypes {
         release {
             minifyEnabled false
@@ -33,15 +42,13 @@ android {
 }
 
 dependencies {
-    // AndroidX core (stable)
-    implementation "androidx.core:core-ktx:1.12.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
 
-    // AppCompat (stable)
+    implementation "androidx.core:core-ktx:1.12.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
 
-    // Material UI (optional but recommended)
     implementation "com.google.android.material:material:1.11.0"
 
-    // Shizuku API (REAL WORKING DEPENDENCY)
+    // Shizuku (safe)
     implementation "dev.rikka.shizuku:api:13.1.5"
 }
