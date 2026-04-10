@@ -2,35 +2,41 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Control Center</title>
 <style>
 body {
-  margin:0;
-  background:#0b0f1a;
-  color:white;
-  font-family:sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+    margin:0;
+    background:#0a0a0a;
+    font-family:sans-serif;
+    color:white;
 }
-.card {
-  text-align:center;
+
+.panel {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    padding:20px;
 }
-button {
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  background:#1e90ff;
-  color:white;
+
+.tile {
+    background:#1c1c1e;
+    padding:20px;
+    border-radius:18px;
+    text-align:center;
 }
+
+.active { background:#0a84ff; }
 </style>
 </head>
+
 <body>
-<div class="card">
-<h2>Control Center Gradle Build</h2>
-<p>System Ready</p>
-<button onclick="alert('OK')">Test</button>
+<h2 style="text-align:center;">Control Center OS</h2>
+
+<div class="panel">
+    <div class="tile">WiFi</div>
+    <div class="tile">Bluetooth</div>
+    <div class="tile">Airplane</div>
+    <div class="tile">Brightness</div>
 </div>
+
 </body>
 </html>
