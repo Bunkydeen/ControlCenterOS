@@ -11,15 +11,13 @@ android {
         applicationId "com.controlcenter.app"
         minSdk 26
         targetSdk 34
-        versionCode 17
-        versionName "V17"
+        versionCode 18
+        versionName "V18"
     }
 
     buildTypes {
         debug {}
-        release {
-            minifyEnabled false
-        }
+        release { minifyEnabled false }
     }
 
     compileOptions {
@@ -36,7 +34,6 @@ dependencies {
     implementation "androidx.core:core-ktx:1.12.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
 
-    // REAL Shizuku integration
+    // REAL Shizuku API
     implementation "dev.rikka.shizuku:api:13.1.5"
-    implementation "dev.rikka.shizuku:provider:13.1.5"
 }
