@@ -1,30 +1,35 @@
-<<<<<<< Updated upstream
-android {
-    compileSdk 33
-
-    defaultConfig {
-        minSdk 21
-        targetSdk 33
+        force 
+        "org.jetbrains.kotlin:kotlin-stdlib:1.8.22" 
+        force 
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22" 
+        force 
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22"
     }
-=======
+}
+    defaultConfig { applicationId 
+        "com.controlcenter.app" minSdk 
+        21 targetSdk 34 versionCode 1 
+        versionName "1.0"
+    }
+
+    buildTypes { release { minifyEnabled 
+            false shrinkResources false 
+            proguardFiles 
+            getDefaultProguardFile('proguard-android-optimize.txt'), 
+            'proguard-rules.pro'
+        }
 plugins {
     id 'com.android.application'
 }
 
 android {
     namespace 'com.controlcenter.app'
-    compileSdk 34
-    configurations.all {
-    resolutionStrategy {
-        force "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
-        force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22"
-        force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22"
-    }
-}
+    compileSdk 33
+
     defaultConfig {
         applicationId "com.controlcenter.app"
         minSdk 21
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
     }
@@ -32,17 +37,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            debuggable true
         }
     }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
->>>>>>> Stashed changes
+    implementation 'androidx.core:core-ktx:1.12.0'
 }
