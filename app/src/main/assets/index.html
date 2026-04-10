@@ -2,41 +2,28 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-    margin:0;
-    background:#0a0a0a;
-    font-family:sans-serif;
-    color:white;
-}
-
-.panel {
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-    padding:20px;
-}
-
-.tile {
-    background:#1c1c1e;
-    padding:20px;
-    border-radius:18px;
-    text-align:center;
-}
-
-.active { background:#0a84ff; }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-<h2 style="text-align:center;">Control Center OS</h2>
 
-<div class="panel">
-    <div class="tile">WiFi</div>
-    <div class="tile">Bluetooth</div>
-    <div class="tile">Airplane</div>
-    <div class="tile">Brightness</div>
+<div id="app">
+    <h2>ControlCenterOS V6</h2>
+
+    <div class="pages">
+        <div class="page active" id="p1">
+            <div class="tile" onclick="toggle(this)">WiFi</div>
+            <div class="tile" onclick="toggle(this)">Bluetooth</div>
+        </div>
+
+        <div class="page" id="p2">
+            <div class="tile" onclick="toggle(this)">Airplane</div>
+            <div class="tile" onclick="toggle(this)">Dark Mode</div>
+        </div>
+    </div>
+
+    <button onclick="nextPage()">Switch Page</button>
 </div>
 
+<script src="js/app.js"></script>
 </body>
 </html>

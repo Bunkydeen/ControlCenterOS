@@ -1,6 +1,4 @@
-plugins {
-    id 'com.android.application'
-}
+plugins { id 'com.android.application' }
 
 android {
     namespace "com.controlcenter.app"
@@ -10,14 +8,12 @@ android {
         applicationId "com.controlcenter.app"
         minSdk 21
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 6
+        versionName "6.0"
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-        }
+        release { minifyEnabled false }
     }
 }
 

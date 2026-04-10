@@ -9,10 +9,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WebView webView = new WebView(this);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/index.html");
+        WebView w = new WebView(this);
+        w.getSettings().setJavaScriptEnabled(true);
+        w.loadUrl("file:///android_asset/index.html");
 
-        setContentView(webView);
+        setContentView(w);
     }
 }
