@@ -1,2 +1,2 @@
-rootProject.name = "ControlCenterOS"
+rootProject.name = "ControlCenter"
 include ':app'
