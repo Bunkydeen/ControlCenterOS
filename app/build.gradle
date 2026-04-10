@@ -1,0 +1,31 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace "com.controlcenter.app"
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.controlcenter.app"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    aaptOptions {
+        useNewCruncher false
+    }
+}
+
+dependencies {}
