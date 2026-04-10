@@ -1,2 +1,8 @@
-rootProject.name = "ControlCenterOS"
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 include ':app'
