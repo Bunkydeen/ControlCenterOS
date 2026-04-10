@@ -1,13 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
     <application
-        android:label="Control Center"
-        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+        android:label="ControlCenter"
+        android:allowBackup="true">
 
-        <activity
-            android:name=".MainActivity"
+        <activity android:name=".MainActivity"
             android:exported="true">
 
             <intent-filter>
