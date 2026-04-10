@@ -1,19 +1,31 @@
 package com.controlcenter.os.shizuku
 
-import android.content.Context
-import dev.rikka.shizuku.Shizuku
+import android.content.pm.PackageManager
+import rikka.shizuku.Shizuku
 
 object ShizukuManager {
 
-    fun isShizukuAvailable(): Boolean {
-        return Shizuku.pingBinder()
+    fun isAvailable(): Boolean {
+        return try {
+            Shizuku.pingBinder()
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun hasPermission(): Boolean {
-        return Shizuku.checkSelfPermission() == android.content.pm.PackageManager.PERMISSION_GRANTED
+        return try {
+            Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun requestPermission() {
-        Shizuku.requestPermission(1001)
+        try {
+            Shizuku.requestPermission(1001)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
