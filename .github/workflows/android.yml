@@ -1,4 +1,4 @@
-name: ControlCenter Factory v10 (Autonomous)
+name: Android APK Build
 
 on:
   push:
@@ -10,47 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Android
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Bump Version Automatically
-        run: bash scripts/bump_version.sh
-
-      - name: Grant permissions
+      - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Clean Build
-        run: ./gradlew clean
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease --no-daemon
-
-      - name: Generate Changelog
-        run: |
-          echo "Changes in $NEW_VERSION" > changelog.txt
-          git log -1 --pretty=format:"%s" >> changelog.txt
-
-      - name: Upload Artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: ControlCenter-${{ env.NEW_VERSION }}
-          path: app/build/outputs/apk/release/*.apk
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v${{ env.NEW_CODE }}
-          name: ControlCenter ${{ env.NEW_VERSION }}
-          body_path: changelog.txt
-          files: app/build/outputs/apk/release/*.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ControlCenterAPK
+          path: app/build/outputs/apk/debug/*.apk
