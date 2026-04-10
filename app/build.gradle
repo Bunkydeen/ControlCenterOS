@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -13,22 +13,28 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
-    }
-configurations.all {
-    resolutionStrategy {
-        // FORCE single Kotlin version
-        force "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
 
-        // REMOVE conflicting artifacts completely
-        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
-        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
-}
+
     buildTypes {
+        debug {
+            debuggable true
+        }
+
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            proguardFiles getDefaultProguardFile(
+                'proguard-android-optimize.txt'
+            ), 'proguard-rules.pro'
         }
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     compileOptions {
@@ -39,16 +45,43 @@ configurations.all {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    packaging {
+        resources {
+            excludes += [
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/*.kotlin_module"
+            ]
+        }
+    }
 }
 
 dependencies {
+
+    // 🔑 FORCE SINGLE KOTLIN VERSION (CRITICAL FIX)
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
 
+    // Core Android
     implementation "androidx.core:core-ktx:1.12.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
 
+    // UI
     implementation "com.google.android.material:material:1.11.0"
 
-    // Shizuku (safe)
+    // 🔧 Shizuku (safe + real)
     implementation "dev.rikka.shizuku:api:13.1.5"
+}
+
+// 🚫 GLOBAL KOTLIN CONFLICT FIX
+configurations.all {
+    resolutionStrategy {
+        force "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
+
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
+    }
 }
