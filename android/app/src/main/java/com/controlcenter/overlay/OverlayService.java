@@ -7,14 +7,17 @@ import android.os.IBinder;
 import android.view.*;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
-import android.widget.Button;
+import android.widget.FrameLayout;
 
 public class OverlayService extends Service {
 
     private WindowManager wm;
-    private View trigger;
+    private FrameLayout container;
     private WebView webView;
+    private View handle;
+
     private boolean isOpen = false;
+    private float startY = 0;
 
     @Override
     public void onCreate() {
@@ -22,23 +25,11 @@ public class OverlayService extends Service {
 
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        // Floating trigger button
-        Button btn = new Button(this);
-        btn.setText("≡");
-        trigger = btn;
+        // MAIN CONTAINER
+        container = new FrameLayout(this);
+        container.setBackgroundColor(0xCC000000);
 
-        WindowManager.LayoutParams triggerParams = new WindowManager.LayoutParams(
-                150, 150,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT
-        );
-
-        triggerParams.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
-
-        wm.addView(trigger, triggerParams);
-
-        // WebView panel
+        // WEBVIEW (your UI)
         webView = new WebView(this);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -46,7 +37,19 @@ public class OverlayService extends Service {
 
         webView.loadUrl("file:///android_asset/public/index.html");
 
-        WindowManager.LayoutParams panelParams = new WindowManager.LayoutParams(
+        // HANDLE (top drag bar)
+        handle = new View(this);
+        handle.setBackgroundColor(0x66FFFFFF);
+
+        FrameLayout.LayoutParams handleParams = new FrameLayout.LayoutParams(
+                200, 20
+        );
+        handleParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+
+        container.addView(webView);
+        container.addView(handle, handleParams);
+
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
@@ -54,17 +57,71 @@ public class OverlayService extends Service {
                 PixelFormat.TRANSLUCENT
         );
 
-        panelParams.gravity = Gravity.TOP;
+        params.gravity = Gravity.TOP;
 
-        btn.setOnClickListener(v -> {
-            if (!isOpen) {
-                wm.addView(webView, panelParams);
-                isOpen = true;
-            } else {
-                wm.removeView(webView);
-                isOpen = false;
+        // START HIDDEN ABOVE SCREEN
+        container.setTranslationY(-2000);
+
+        wm.addView(container, params);
+
+        // HANDLE DRAG LOGIC
+        handle.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+
+                case MotionEvent.ACTION_DOWN:
+                    startY = event.getRawY();
+                    return true;
+
+                case MotionEvent.ACTION_MOVE:
+                    float dy = event.getRawY() - startY;
+                    if (dy > 0) container.setTranslationY(-2000 + dy);
+                    return true;
+
+                case MotionEvent.ACTION_UP:
+                    if (container.getTranslationY() > -1000) {
+                        open();
+                    } else {
+                        close();
+                    }
+                    return true;
+            }
+            return false;
+        });
+
+        // SWIPE ANYWHERE TO CLOSE
+        webView.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+
+                case MotionEvent.ACTION_DOWN:
+                    startY = event.getRawY();
+                    return false;
+
+                case MotionEvent.ACTION_MOVE:
+                    float dy = event.getRawY() - startY;
+                    if (dy < 0) {
+                        container.setTranslationY(dy);
+                    }
+                    return false;
+
+                case MotionEvent.ACTION_UP:
+                    if (container.getTranslationY() < -300) {
+                        close();
+                    } else {
+                        open();
+                    }
+                    return false;
             }
         });
+    }
+
+    private void open() {
+        container.animate().translationY(0).setDuration(250).start();
+        isOpen = true;
+    }
+
+    private void close() {
+        container.animate().translationY(-2000).setDuration(250).start();
+        isOpen = false;
     }
 
     @Override
