@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.view.*;
-import android.widget.*;
+import android.webkit.WebView;
+import android.webkit.WebSettings;
+import android.widget.Button;
 
 public class OverlayService extends Service {
 
     private WindowManager wm;
     private View trigger;
-    private View panel;
+    private WebView webView;
+    private boolean isOpen = false;
 
     @Override
     public void onCreate() {
@@ -19,9 +22,10 @@ public class OverlayService extends Service {
 
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        // trigger button
-        trigger = new Button(this);
-        ((Button) trigger).setText("≡");
+        // Floating trigger button
+        Button btn = new Button(this);
+        btn.setText("≡");
+        trigger = btn;
 
         WindowManager.LayoutParams triggerParams = new WindowManager.LayoutParams(
                 150, 150,
@@ -30,28 +34,36 @@ public class OverlayService extends Service {
                 PixelFormat.TRANSLUCENT
         );
 
-        triggerParams.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+        triggerParams.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
 
         wm.addView(trigger, triggerParams);
 
-        // panel
-        panel = new LinearLayout(this);
-        panel.setBackgroundColor(0xCC111111);
+        // WebView panel
+        webView = new WebView(this);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+
+        webView.loadUrl("file:///android_asset/public/index.html");
 
         WindowManager.LayoutParams panelParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                600,
+                WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT
         );
 
         panelParams.gravity = Gravity.TOP;
 
-        trigger.setOnClickListener(v -> {
-            try {
-                wm.addView(panel, panelParams);
-            } catch (Exception ignored) {}
+        btn.setOnClickListener(v -> {
+            if (!isOpen) {
+                wm.addView(webView, panelParams);
+                isOpen = true;
+            } else {
+                wm.removeView(webView);
+                isOpen = false;
+            }
         });
     }
 
